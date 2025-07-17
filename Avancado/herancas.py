@@ -51,10 +51,9 @@ print(raiz.funcao())
 print(filho1.funcao())
 print(filho2.funcao())
 
-print()
-print('\nHerança Múltipla em Python\n')
-
 # Herança Múltipla em Python
+# Demonstração de herança múltipla com classes base e classe filha
+# A herança múltipla permite que uma classe herde de várias classes base
 
 # Torna-se necessário utilizar **kwargs para passar argumentos para as classes base
 # Isso permite que a classe Filho receba argumentos adicionais e os repasse para as classes base
@@ -86,6 +85,8 @@ class Filho(Base1, Base2):
 base1 = Base1(valor=100)
 base2 = Base2(valor=200)
 
+print('\n\nHerança Múltipla em Python\n')
+
 print("\nBase1 e Base2 sem herança múltipla:")
 
 print(base1.funcao_base1())
@@ -97,3 +98,7 @@ filho = Filho(valor_filho=300, valor=400)
 print(filho.funcao_base1())
 print(filho.funcao_base2())
 print(filho.funcao_filho())
+
+# Desvantagem da herança múltipla:
+#  - A ordem de resolução de métodos (MRO) pode ser complexa e levar a comportamentos inesperados
+#  - Fora que a herança múltipla pode tornar o código mais difícil de entender e manter
