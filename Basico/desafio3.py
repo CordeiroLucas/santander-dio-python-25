@@ -43,10 +43,10 @@ class Cliente(Pessoa):
         if valor > self.saldo:
             raise ValueError("Saldo insuficiente para o saque.")
         self.saldo -= valor
-        print(f"Saque de R$ {valor:.2f} realizado com sucesso!")
+        print(f"Saque de R$ {valor:.2f} realizado com sucesso!\n")
         
     def __str__(self):
-        return f"{super().__str__()}, Conta: {self.conta}, Saldo: R$ {self.saldo:.2f}"
+        return ' | '.join(f"{k.upper().removeprefix('_')}: {v}" for k, v in self.__dict__.items())
 
 class Banco:
     def __init__(self, **kw):
@@ -55,7 +55,7 @@ class Banco:
         self._clientes = []
 
     def __str__(self):
-        return ', '.join(f"{k}: {v}" for k, v in self.__dict__.items())
+        return ' | '.join(f"{k.upper()}: {v}" for k, v in self.__dict__.items())
     
     def gerar_numero_conta(self):
         import random
@@ -118,17 +118,39 @@ class Banco:
 
 pessoa1 = Pessoa(nome="João", idade=30, cpf="12345678901")
 pessoa2 = Pessoa(nome="Maria", idade=25, cpf="10987654321")
-pessoa3 = Pessoa(nome="Junio", idade=33, cpf="10987654321")
+pessoa3 = Pessoa(nome="Junio", idade=33, cpf="11223344556")
+pessoa4 = Pessoa(nome="Ana", idade=28, cpf="65432109876")
 
 
 banco1 = Banco(nome="Santander1", agencia="001")
 
 banco1.cadastrar_cliente(pessoa1)
 banco1.cadastrar_cliente(pessoa2)
+banco1.cadastrar_cliente(pessoa3)
+banco1.cadastrar_cliente(pessoa4)
+
+# Testando transferências entre clientes do mesmo banco
+print()
+banco1.get_clientes()[0].depositar(500.0)  # João deposita R$ 500,00
+
+print(banco1.get_clientes()[0])
+
+banco1.get_clientes()[0].sacar(100.0)  # João saca R$ 100,00
+
+
+banco1.transferir_mesmo_banco(banco1.get_clientes()[0], banco1.get_clientes()[1], 200.0)
+
+print(banco1.get_clientes()[0])
+print(banco1.get_clientes()[1])
 
 banco2 = Banco(nome="Santander2", agencia="002")
+banco2.cadastrar_cliente(pessoa4)
 
+banco1.transferir_diferente_banco(banco1.get_clientes()[0], banco2.get_clientes()[0], banco2, 50.0)
 
-print(banco1.listar_clientes())  # Saída: Nome: João, Idade: 30
+print(banco1.get_clientes()[0], banco1.nome, banco1.agencia)
+print(banco2.get_clientes()[0], banco2.nome, banco2.agencia)
+
+# print(banco1.listar_clientes())  # Saída: Nome: João, Idade: 30
 # print(banco2.listar_clientes()) 
 
